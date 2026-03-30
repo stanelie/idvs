@@ -13,3 +13,5 @@ Select the correct network interface for your Dante network.\
 If using pipewire, tick the box. If using pure ALSA, untick, and use the named devices provided in the gui text.
 
 Build this app with `cargo build --release`
+
+Built with Claude.AI
