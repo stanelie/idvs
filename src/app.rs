@@ -14,6 +14,7 @@ pub struct App {
     interfaces: Vec<NetworkInterface>,
     show_settings: bool,
     show_log: bool,
+    show_about: bool,
     pending_close: bool,
 
     // Worker communication
@@ -35,6 +36,7 @@ impl App {
             interfaces,
             show_settings: false,
             show_log: false,
+            show_about: false,
             pending_close: false,
             cmd_tx,
             event_rx,
@@ -157,6 +159,23 @@ impl App {
                     });
             });
         self.show_log = open;
+    }
+
+    fn show_about_window(&mut self, ctx: &egui::Context) {
+        let mut open = self.show_about;
+        egui::Window::new("About")
+            .open(&mut open)
+            .resizable(false)
+            .collapsible(false)
+            .show(ctx, |ui| {
+                ui.vertical_centered(|ui| {
+                    ui.heading("idvs");
+                    ui.label(format!("Version {}", env!("CARGO_PKG_VERSION")));
+                    ui.add_space(4.0);
+                    ui.hyperlink("https://github.com/stanelie/idvs");
+                });
+            });
+        self.show_about = open;
     }
 
     fn show_settings_window(&mut self, ctx: &egui::Context) {
@@ -289,11 +308,6 @@ impl App {
             .num_columns(2)
             .spacing([8.0, 4.0])
             .show(ui, |ui| {
-                if let WorkerState::Running { statime_pid } = self.state {
-                    ui.label("statime PID:");
-                    ui.label(statime_pid.to_string());
-                    ui.end_row();
-                }
 
                 if self.ptp.has_data {
                     ui.label("Clock Offset:");
@@ -304,9 +318,7 @@ impl App {
                     ui.label(format_ns(self.ptp.delay_ns));
                     ui.end_row();
 
-                    ui.label("Steps Removed:");
-                    ui.label(self.ptp.steps_removed.to_string());
-                    ui.end_row();
+
                 } else if self.is_running() {
                     ui.label("Clock:");
                     ui.label(RichText::new("Waiting for sync...").color(Color32::GRAY));
@@ -318,7 +330,7 @@ impl App {
                     ui.label(RichText::new("dante").monospace());
                     ui.end_row();
 
-                    ui.label("Format plug:");
+                    ui.label("ALSA plug device:");
                     ui.label(RichText::new("dante_plug").monospace());
                     ui.end_row();
                 }
@@ -428,6 +440,9 @@ impl eframe::App for App {
         if self.show_log {
             self.show_log_window(ctx);
         }
+        if self.show_about {
+            self.show_about_window(ctx);
+        }
 
         // Menu bar
         egui::TopBottomPanel::top("menu_bar").show(ctx, |ui| {
@@ -441,6 +456,12 @@ impl eframe::App for App {
                 if ui.button("Log").clicked() {
                     self.show_log = !self.show_log;
                 }
+                ui.menu_button("Help", |ui| {
+                    if ui.button("About…").clicked() {
+                        self.show_about = true;
+                        ui.close_menu();
+                    }
+                });
             });
         });
 

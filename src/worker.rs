@@ -47,7 +47,6 @@ pub struct PtpStatus {
     pub offset_ns: f64,
     /// Mean network delay in nanoseconds
     pub delay_ns: f64,
-    pub steps_removed: u16,
     /// True when we have received at least one status update
     pub has_data: bool,
     /// True when offset is small enough to consider synced
@@ -655,7 +654,6 @@ fn poll_ptp_status(socket_path: &str) -> Option<PtpStatus> {
     Some(PtpStatus {
         offset_ns,
         delay_ns,
-        steps_removed,
         has_data: true,
         synced,
     })
