@@ -128,12 +128,8 @@ impl App {
                 channels_combo(ui, &mut self.config.tx_channels, &mut self.config.rx_channels);
                 ui.end_row();
 
-                ui.label("TX Latency:");
-                latency_combo(ui, "tx_lat", &mut self.config.tx_latency_ns);
-                ui.end_row();
-
-                ui.label("RX Latency:");
-                latency_combo(ui, "rx_lat", &mut self.config.rx_latency_ns);
+                ui.label("Latency:");
+                latency_combo(ui, "lat", &mut self.config.latency_ns);
                 ui.end_row();
             });
 
@@ -493,7 +489,7 @@ fn latency_combo(ui: &mut Ui, id: &str, value: &mut u32) {
         .selected_text(label)
         .width(100.0)
         .show_ui(ui, |ui| {
-            for &ms in &[1u32, 2, 4, 5, 10, 15, 20, 40] {
+            for &ms in &[4u32, 6, 10, 20, 40] {
                 ui.selectable_value(value, ms * 1_000_000, format!("{ms} ms"));
             }
         });

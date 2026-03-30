@@ -8,8 +8,7 @@ pub struct Config {
     pub tx_channels: u32,
     pub rx_channels: u32,
     pub sample_rate: u32,
-    pub tx_latency_ns: u32,
-    pub rx_latency_ns: u32,
+    pub latency_ns: u32,
     /// Path where statime will export its usrvclock socket
     pub clock_path: String,
     /// Path for statime observation socket (PTP status monitoring)
@@ -42,8 +41,7 @@ impl Default for Config {
             tx_channels: 2,
             rx_channels: 2,
             sample_rate: 48000,
-            tx_latency_ns: 10_000_000,
-            rx_latency_ns: 10_000_000,
+            latency_ns: 10_000_000,
             clock_path: "/tmp/dante-clock".to_string(),
             observation_path: "/tmp/idvs-statime-obs.sock".to_string(),
             statime_bin: exe_dir.join("statime"),
@@ -118,8 +116,8 @@ observation-permissions = 0o666
     TX_CHANNELS {tx}
     RX_CHANNELS {rx}
     CLOCK_PATH "{clock}"
-    TX_LATENCY_NS {tx_lat}
-    RX_LATENCY_NS {rx_lat}
+    TX_LATENCY_NS {lat}
+    RX_LATENCY_NS {lat}
 
     hint {{
         show on
@@ -146,8 +144,7 @@ ctl.dante {{
             tx = self.tx_channels,
             rx = self.rx_channels,
             clock = self.clock_path,
-            tx_lat = self.tx_latency_ns,
-            rx_lat = self.rx_latency_ns,
+            lat = self.latency_ns,
         )
     }
 
