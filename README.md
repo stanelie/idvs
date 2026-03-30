@@ -2,7 +2,7 @@ Inferno DVS
 
 GUI for statime (https://github.com/teodly/statime) and inferno (https://github.com/teodly/inferno), so it looks and feels more like the Dante DVS.
 
-<img width="650" height="454" alt="idvs" src="https://github.com/user-attachments/assets/4a3789a7-8104-48f0-b63b-e18385a2a9af" />
+<img width="650" height="454" alt="idvs" src="https://github.com/user-attachments/assets/1906c875-83cf-4a98-99c6-fd93661e45cd" />
 
 Requires root to launch statime.
 
