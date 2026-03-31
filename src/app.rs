@@ -510,7 +510,7 @@ fn latency_combo(ui: &mut Ui, id: &str, value: &mut u32) {
         .selected_text(label)
         .width(100.0)
         .show_ui(ui, |ui| {
-            for &ms in &[4u32, 6, 10, 20, 40] {
+            for &ms in &[1u32, 2, 3, 4, 6, 10, 20, 40] {
                 ui.selectable_value(value, ms * 1_000_000, format!("{ms} ms"));
             }
         });
