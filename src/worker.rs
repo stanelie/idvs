@@ -509,8 +509,7 @@ fn pipewire_dante_config(config: &Config) -> String {
       node.description                = "{name} (Dante Playback)"
       media.class                     = Audio/Sink
       api.alsa.path                   = dante
-      api.alsa.period-size            = 1024
-      api.alsa.headroom               = {headroom}
+      api.alsa.headroom               = 0
       audio.channels                  = {tx}
       audio.rate                      = {rate}
       object.linger                   = true
@@ -525,8 +524,7 @@ fn pipewire_dante_config(config: &Config) -> String {
       node.description                = "{name} (Dante Capture)"
       media.class                     = Audio/Source
       api.alsa.path                   = dante
-      api.alsa.period-size            = 1024
-      api.alsa.headroom               = {headroom}
+      api.alsa.headroom               = 0
       audio.channels                  = {rx}
       audio.rate                      = {rate}
       object.linger                   = true
@@ -537,7 +535,6 @@ fn pipewire_dante_config(config: &Config) -> String {
 ]
 "#,
         name = config.device_name,
-        headroom = config.pipewire_headroom,
         tx = config.tx_channels,
         rx = config.rx_channels,
         rate = config.sample_rate,

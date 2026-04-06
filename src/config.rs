@@ -19,8 +19,6 @@ pub struct Config {
     pub inferno_so: PathBuf,
     /// Whether to set up a persistent PipeWire node
     pub use_pipewire: bool,
-    /// PipeWire ALSA headroom in frames
-    pub pipewire_headroom: u32,
 }
 
 impl Default for Config {
@@ -47,7 +45,6 @@ impl Default for Config {
             statime_bin: exe_dir.join("statime"),
             inferno_so: exe_dir.join("libasound_module_pcm_inferno.so"),
             use_pipewire: true,
-            pipewire_headroom: 128,
         }
     }
 }
@@ -161,10 +158,9 @@ ctl.dante {{
             "create-node".to_string(),
             "adapter".to_string(),
             format!(
-                "{{ object.linger=1 factory.name=api.alsa.pcm.duplex node.name=\"{}\" media.class=Audio/Duplex api.alsa.path=\"{}\" session.suspend-timeout-seconds=0 node.pause-on-idle=false node.suspend-on-idle=false node.always-process=true api.alsa.headroom={} }}",
+                "{{ object.linger=1 factory.name=api.alsa.pcm.duplex node.name=\"{}\" media.class=Audio/Duplex api.alsa.path=\"{}\" session.suspend-timeout-seconds=0 node.pause-on-idle=false node.suspend-on-idle=false node.always-process=true api.alsa.headroom=0 }}",
                 self.device_name,
                 alsa_path,
-                self.pipewire_headroom,
             ),
         ]
     }

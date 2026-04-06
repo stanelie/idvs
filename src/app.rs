@@ -246,14 +246,6 @@ impl App {
                         });
                         ui.end_row();
 
-                        ui.label("PipeWire Headroom:");
-                        ui.add(
-                            egui::DragValue::new(&mut self.config.pipewire_headroom)
-                                .speed(8.0)
-                                .clamp_range(64u32..=1024u32)
-                                .suffix(" frames"),
-                        );
-                        ui.end_row();
                     });
 
                 ui.add_space(4.0);
