@@ -75,6 +75,7 @@ impl App {
         self.config.save();
         self.logs.clear();
         self.ptp = PtpStatus::default();
+        self.state = WorkerState::StartingStatime;
         let _ = self.cmd_tx.send(WorkerCmd::Start(self.config.clone()));
     }
 
