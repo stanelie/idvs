@@ -4,6 +4,7 @@ use std::net::Ipv4Addr;
 pub struct NetworkInterface {
     pub name: String,
     pub ip: Option<Ipv4Addr>,
+    pub is_wifi: bool,
 }
 
 impl std::fmt::Display for NetworkInterface {
@@ -41,7 +42,10 @@ pub fn list_interfaces() -> Vec<NetworkInterface> {
 
     by_name
         .into_iter()
-        .map(|(name, ip)| NetworkInterface { name, ip })
+        .map(|(name, ip)| {
+            let is_wifi = std::path::Path::new(&format!("/sys/class/net/{}/wireless", name)).exists();
+            NetworkInterface { name, ip, is_wifi }
+        })
         .collect()
 }
 

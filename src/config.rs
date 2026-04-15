@@ -72,6 +72,16 @@ impl Config {
         }
     }
 
+    /// PipeWire quantum derived from the configured latency and sample rate.
+    /// Rounded down to the nearest power of two so it fits within the Dante
+    /// network latency budget while staying compatible with audio drivers.
+    pub fn pipewire_quantum(&self) -> u32 {
+        let frames = self.latency_ns as u64 * self.sample_rate as u64 / 1_000_000_000;
+        let frames = frames.max(1) as u32;
+        // largest power-of-two ≤ frames
+        1u32 << (31 - frames.leading_zeros())
+    }
+
     /// Generate the statime TOML configuration content
     pub fn statime_config(&self) -> String {
         format!(

@@ -501,7 +501,11 @@ fn pipewire_dante_conf_path(home: &str) -> String {
 /// network even when no app is actively playing/recording.
 fn pipewire_dante_config(config: &Config) -> String {
     format!(
-        r#"context.objects = [
+        r#"context.properties = {{
+  default.clock.quantum = {quantum}
+}}
+
+context.objects = [
   {{ factory = adapter
     args = {{
       factory.name                    = api.alsa.pcm.sink
@@ -534,6 +538,7 @@ fn pipewire_dante_config(config: &Config) -> String {
   }}
 ]
 "#,
+        quantum = config.pipewire_quantum(),
         name = config.device_name,
         tx = config.tx_channels,
         rx = config.rx_channels,

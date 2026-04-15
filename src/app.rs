@@ -119,6 +119,21 @@ impl App {
                 });
                 ui.end_row();
 
+                let selected_is_wifi = self.interfaces
+                    .iter()
+                    .find(|i| i.name == self.config.interface)
+                    .map(|i| i.is_wifi)
+                    .unwrap_or(false);
+                if selected_is_wifi {
+                    ui.label("");
+                    ui.label(
+                        RichText::new("⚠ Wi-Fi interface — performance will be poor")
+                            .small()
+                            .color(Color32::GOLD),
+                    );
+                    ui.end_row();
+                }
+
                 ui.label("Device Name:");
                 ui.add(
                     TextEdit::singleline(&mut self.config.device_name)
@@ -141,6 +156,7 @@ impl App {
         ui.horizontal(|ui| {
             ui.checkbox(&mut self.config.use_pipewire, "Add persistent PipeWire node (untick to use ALSA directly)");
         });
+
     }
 
     fn show_log_window(&mut self, ctx: &egui::Context) {
